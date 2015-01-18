@@ -1,28 +1,14 @@
 package pjr01Main;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 public class Debug {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		ArrayList<Integer> test = new ArrayList<>();
-		ArrayList<Integer> todisp = new ArrayList<>();
+		Person p = new Person("Bo Erik", "Hello", 120, new Address("1", "2", "3"));
 		
-		Random r = new Random();
+		System.out.println("nr\tsig\tName\t\tLength(cm)");
+		System.out.println("1.\t"+p.toString());
 		
-		for (int i = 0; i < 10; i++) {
-			test.add(new Integer(i));
-		}
-		System.out.println(test);
-		int lim = test.size();
-		for (int i =0; i < lim; i++){
-			todisp.add(test.remove(r.nextInt(test.size())));
-		}
-		System.out.println("--");
-		System.out.println("test:	" +test);
-		System.out.println("todisp: " +todisp);
 	}
 
 }

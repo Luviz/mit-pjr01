@@ -24,10 +24,34 @@ public class Person {
 		//TODO call sigGen (fName, sName);
 		
 		this.address = address; // TODO pjr01Main.Presons make sure to give it a full address
+		
+		sigGen();
 	}
 
 	
-	
+	/**
+	 * Generates a signature for then entry
+	 */
+	private void sigGen() {
+		char [] sig = "xxxxxx".toCharArray();
+		int c =0;
+		int ctmp =0;
+		
+		while (fName.length() > ctmp && ctmp <3){
+			sig[c++] = fName.toLowerCase().charAt(ctmp++);
+		}
+		ctmp =0;
+		c = 3;
+		while (sName.length() > ctmp && ctmp <3){
+			sig[c++] = sName.toLowerCase().charAt(ctmp++);
+		}
+		
+		this.sig = new String(sig).replace(" ", "x");	//this will fix names like Bo Erik
+		//System.out.println(sig);//DEBUG
+	}
+
+
+
 	public String getSig() {
 		return sig;
 	}
@@ -50,6 +74,9 @@ public class Person {
 		return true;
 	}
 	
-	
+	@Override
+	public String toString(){
+		return sig +"\t"+fName + " " + sName +  "\t\t" + new Integer(length).toString(); 
+	}
 	
 }
