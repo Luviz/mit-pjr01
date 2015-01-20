@@ -1,12 +1,21 @@
 package pjr01Main;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
-
-
 
 public class Shell {
 	private Persons persons;
-	final String ADDHELP = "add - adds a new Entry to the list.\n Usege add [fName] [sName] [length(cm)] [Addreas] [Zip Code] [City]";
+	final String ADDHELP = ""
+			+ "add - adds a new Entry to the list.\n "
+			+ "Usage add [fName] [sName] [length(cm)] [Addreas] [Zip Code] [City]";
+	final String SOHWHELP = ""
+			+ "show - show the list items\n"
+			+ "Usage show [option] [modifer]\n"
+			+ "Options:\n"
+			+ "\t	\thelp\n"
+			+ "\t	\tlim [range]\t e.g. show lim 0-5\n"
+			+ "\t	\tsteplim [size]\t e.g. show steplim 5";
 	private Scanner s;
 	
 	public Shell(){
@@ -17,7 +26,7 @@ public class Shell {
 	
 	public void start(){
 		String [] commands = {
-				"exit" , "help", "add" , "edit"	 , "remove" , "show" , "sort"
+				"exit" , "help", "add" , "edit"	 , "remove" , "show" , "sort" , "write" , "read"
 		};
 		
 		String input;			//readLine will read the input line 
@@ -53,6 +62,29 @@ public class Shell {
 				case 2:	//add
 					add(inputArray);
 					break;
+				case 3: //Edit
+					break;
+				case 4: //remove
+					break;
+				case 5: //show
+					show(inputArray);
+					break;
+				case 7: //write
+					try {
+						persons.write(inputArray[1]);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					break;
+				case 8: //read
+					try {
+						persons.read(inputArray[1]);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					break;
 
 				default:
 					break;
@@ -86,6 +118,27 @@ public class Shell {
 		}
 	}
 
+	private void show(String[] inArray) {
+		ArrayList<Person> pArray = new ArrayList<>(persons.show());
+		switch (inArray[1]) {
+		case "lim":
+			
+			break;
+			
+		case "help":
+			System.out.println(SOHWHELP);
+			break;
+
+		default:
+			for (Person person : pArray) {
+				System.out.println(person);
+			}
+			break;
+		}
+		
+		
+	}
+	
 	private void help(String[] inputArray, String[] commands) {
 		System.out.println();
 		for (String s : commands){
@@ -98,5 +151,7 @@ public class Shell {
 		return ret;
 		
 	}
+	
+	
 	
 }

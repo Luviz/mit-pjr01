@@ -1,9 +1,9 @@
 package pjr01Main;
 
 public class Address {
-	String Add;	//post add.
-	String Zip;	//zipcode
-	String city;
+	private String add;	//post add.
+	private String zip;	//zipcode
+	private String city;
 	
 	/**
 	 * 
@@ -12,26 +12,37 @@ public class Address {
 	 * @param city
 	 */
 	public Address(String add, String zip, String city) {
-		super();
-		Add = add;
-		Zip = zip;
+		this.add = add;
+		this.zip = zip;
 		this.city = city;
+	}
+	
+	/**
+	 * usage for reading from a File
+	 * @param string - [String: Address]_[String zip]_[String: City]\n
+	 */
+	public Address(String in) {
+		String []inArray = in.split("_");
+		this.add = inArray[0];
+		this.zip = inArray[1];
+		this.city = inArray[2];
+		
 	}
 
 	public String getAdd() {
-		return Add;
+		return add;
 	}
 
 	public void setAdd(String add) {
-		Add = add;
+		this.add = add;
 	}
 
 	public String getZip() {
-		return Zip;
+		return zip;
 	}
 
 	public void setZip(String zip) {
-		Zip = zip;
+		this.zip = zip;
 	}
 
 	public String getCity() {
@@ -40,6 +51,15 @@ public class Address {
 
 	public void setCity(String city) {
 		this.city = city;
+	}
+
+	@Override
+	public String toString(){
+		return add + "\t" + zip +"\t" + city;
+	}
+	
+	public String toWrite() {
+		return add + "_" + zip + "_" + city;
 	}
 	
 	

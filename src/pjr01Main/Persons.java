@@ -1,7 +1,15 @@
 package pjr01Main;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
 
@@ -102,14 +110,14 @@ public class Persons {
 	public void sort(String in){
 		switch (in) {
 		case "name":
-			
+			sortByName();
 			break;
 		case "sig":
-			
+			sortBySig();
 			break;
 		case "length":
 		case "l":
-			
+			sortByLength();
 			break;
 			
 
@@ -117,6 +125,55 @@ public class Persons {
 			System.out.println(SORTHELP);
 			break;
 		}
+	}
+
+	private void sortByName() {
+		// TODO Auto-generated method stub
+		tmp = new ArrayList<>();	//reseting tmp;
+		ArrayList<Person> t = new ArrayList<>(main);
+		
+		int minIx = 0;
+		while(!t.isEmpty()){
+			String tocheckM = new String(t.get(0).getfName() + " "+ t.get(0).getsName());
+			for (int j = 0; j < t.size(); j++) {
+				String check = new String(t.get(j).getfName() + " "+ t.get(j).getsName());
+				if (tocheckM.compareTo(check) < 0){
+					//min < i					
+				}else {
+					minIx = j;
+					tocheckM = new String(t.get(minIx).getfName() + " "+ t.get(minIx).getsName());
+				}
+			}
+			tmp.add(t.remove(minIx)); //adding to the list ; t size -- 
+		}
+	}
+
+	private void sortBySig() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void sortByLength() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void write(String url) throws IOException{
+		BufferedWriter output = new BufferedWriter(new FileWriter(url));
+		for (Person p : main) {
+			output.write(p.toWrite());
+		}
+		output.close();
+	}
+	
+	public void read(String url) throws IOException{
+		BufferedReader input = new BufferedReader(new FileReader(url));
+		String in = ""; 
+		while ((in = input.readLine()) != null){
+			main.add(new Person(in));
+			System.out.println(in);
+		}
+		input.close();
 	}
 	
 }

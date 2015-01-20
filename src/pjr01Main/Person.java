@@ -27,7 +27,22 @@ public class Person {
 		
 		sigGen();
 	}
-
+	
+	/**
+	 * usage for reading from a File
+	 * @param in - [String: sig]\t[String: fname]\t[String:sname]\t[int: length]-[Address Address]\n 
+	 */
+	public Person (String in){
+		String [] inArray = in.split("-");			//spliting Person and the Address 
+		String [] pArray = inArray[0].split("\t");	//spliting Person ix 0 sig ix 1 fname ix 2 sname ix 3 length
+		this.sig = pArray[0];
+		this.fName = pArray[1];
+		this.sName = pArray[2];
+		
+		this.length = new Integer(pArray[3]);
+		
+		this.address = new Address(inArray[1]); 
+	}	
 	
 	/**
 	 * Generates a signature for then entry
@@ -55,6 +70,41 @@ public class Person {
 	public String getSig() {
 		return sig;
 	}
+	
+	public String getfName() {
+		return fName;
+	}
+
+	public void setfName(String fName) {
+		this.fName = fName;
+	}
+
+	public String getsName() {
+		return sName;
+	}
+
+	public void setsName(String sName) {
+		this.sName = sName;
+	}
+
+	public int getLength() {
+		return length;
+	}
+
+	public void setLength(int length) {
+		this.length = length;
+	}
+
+
+	public Address getAddress() {
+		return address;
+	}
+
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
 
 	//DONT USE THIS!
 	@Override
@@ -79,4 +129,7 @@ public class Person {
 		return sig +"\t"+fName + " " + sName +  "\t\t" + new Integer(length).toString(); 
 	}
 	
+	public String toWrite(){
+		return sig+"\t"+fName+"\t"+sName+"\t"+ new Integer(length).toString()+"-"+address.toWrite()+"\n";
+	}
 }
