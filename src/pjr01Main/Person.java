@@ -11,11 +11,26 @@ public class Person {
 	
 	Address address;
 	
+	
 	//if need add pointer to Persons here
 	//Persons p; 		//lets keep track of the boss - this will interfere with Presons.add(arr) -
 	
 	
-	public Person(String fName, String sName, int length, Address address) {
+	public Person(Person p){
+		//is this necessary I was never good with calling by ref or copying an obj!
+		this.sig= new String(p.getSig()); 
+		
+		this.fName = new String(p.getfName());
+		this.sName = new String(p.getsName());
+		
+		this.length = p.length;
+		
+		this.address = new Address(p.getAddress());
+	}
+	
+	public Person(String sig ,String fName, String sName, int length, Address address) {
+		this.sig= sig; 
+		
 		this.fName = fName;
 		this.sName = sName;
 		
@@ -25,9 +40,16 @@ public class Person {
 		
 		this.address = address; // TODO pjr01Main.Presons make sure to give it a full address
 		
-		sigGen();
+		//sigGen();
 	}
 	
+	/**
+	 * 
+	 */
+	public Person() {
+		super();
+	}
+
 	/**
 	 * usage for reading from a File
 	 * @param in - [String: sig]\t[String: fname]\t[String:sname]\t[int: length]-[Address Address]\n 
@@ -47,28 +69,32 @@ public class Person {
 	/**
 	 * Generates a signature for then entry
 	 */
-	private void sigGen() {
-		char [] sig = "xxxxxx".toCharArray();
-		int c =0;
-		int ctmp =0;
-		
-		while (fName.length() > ctmp && ctmp <3){
-			sig[c++] = fName.toLowerCase().charAt(ctmp++);
-		}
-		ctmp =0;
-		c = 3;
-		while (sName.length() > ctmp && ctmp <3){
-			sig[c++] = sName.toLowerCase().charAt(ctmp++);
-		}
-		
-		this.sig = new String(sig).replace(" ", "x");	//this will fix names like Bo Erik
-		//System.out.println(sig);//DEBUG
-	}
+//	private void sigGen() {
+//		char [] sig = "xxxxxx".toCharArray();
+//		int c =0;
+//		int ctmp =0;
+//		
+//		while (fName.length() > ctmp && ctmp <3){
+//			sig[c++] = fName.toLowerCase().charAt(ctmp++);
+//		}
+//		ctmp =0;
+//		c = 3;
+//		while (sName.length() > ctmp && ctmp <3){
+//			sig[c++] = sName.toLowerCase().charAt(ctmp++);
+//		}
+//		
+//		this.sig = new String(sig).replace(" ", "x");	//this will fix names like Bo Erik
+//		//System.out.println(sig);//DEBUG
+//	}
 
 
 
 	public String getSig() {
 		return sig;
+	}
+	public void setSig(String sig) {
+		this.sig = new String (sig);
+		
 	}
 	
 	public String getfName() {
@@ -132,4 +158,6 @@ public class Person {
 	public String toWrite(){
 		return sig+"\t"+fName+"\t"+sName+"\t"+ new Integer(length).toString()+"-"+address.toWrite()+"\n";
 	}
+
+	
 }

@@ -65,7 +65,45 @@ public class Persons {
 	 * @param city		- city
 	 */
 	public void Add(String fName, String sName, int length, String add, String zip, String city){
-		main.add(new Person(fName, sName, length, new Address(add, zip, city)));
+		
+		main.add( new Person(sigGen(fName, sName),fName, sName, length, new Address(add, zip, city)));
+		updateTmp();
+	}
+	
+	private String sigGen(String fName, String sName) {
+		char [] sig = "xxxxxx".toCharArray();
+		int c =0;
+		int ctmp =0;
+		
+		while (fName.length() > ctmp && ctmp <3){
+			sig[c++] = fName.toLowerCase().charAt(ctmp++);
+		}
+		ctmp =0;
+		c = 3;
+		while (sName.length() > ctmp && ctmp <3){
+			sig[c++] = sName.toLowerCase().charAt(ctmp++);
+		}
+		
+		String ret = new String(sig).replace(" ", "x");	//this will fix names like Bo Erik
+		
+		boolean done = false;
+		c = 0;
+		while(!done){
+			String test = new String(ret);
+			test += String.format("%02d", ++c);
+			if (find(test) == null){
+				//the sig dose not exsitst there by it can be added
+				done = true;
+				ret = new String(test);
+			}
+		}
+
+		return ret;
+		// System.out.println(sig);//DEBUG
+	}
+
+	public void updateTmp(){
+		this.tmp = new ArrayList<>(this.main); 
 	}
 	
 	public void fun(){
@@ -80,11 +118,10 @@ public class Persons {
 	}
 	
 	public ArrayList<Person> show(){
-		if (todisp.isEmpty()){
-			todisp = new ArrayList<>(tmp);
-			if (tmp.isEmpty()){
-				todisp = new ArrayList<>(main);
-			}
+		
+		todisp = new ArrayList<>(tmp);
+		if (tmp.isEmpty()) {
+			todisp = new ArrayList<>(main);
 		}
 		return todisp;
 	}
@@ -109,26 +146,25 @@ public class Persons {
 	
 	public void sort(String in){
 		switch (in) {
-		case "name":
+		case "-n":
 			sortByName();
 			break;
-		case "sig":
+		case "-s":
 			sortBySig();
 			break;
-		case "length":
-		case "l":
+		case "-l":
 			sortByLength();
 			break;
 			
 
 		default:
-			System.out.println(SORTHELP);
+			System.out.println("unkonw");
 			break;
 		}
 	}
 
 	private void sortByName() {
-		// TODO Auto-generated method stub
+		//System.out.println("sortbyname");//DEBUG
 		tmp = new ArrayList<>();	//reseting tmp;
 		ArrayList<Person> t = new ArrayList<>(main);
 		
@@ -145,7 +181,13 @@ public class Persons {
 				}
 			}
 			tmp.add(t.remove(minIx)); //adding to the list ; t size -- 
+			
 		}
+		/*DEBUG
+		for (Person person : tmp) {
+			System.out.println(person);
+		}
+		//*/
 	}
 
 	private void sortBySig() {
@@ -154,8 +196,24 @@ public class Persons {
 	}
 
 	private void sortByLength() {
-		// TODO Auto-generated method stub
+		System.out.println("sortByLength");//DEBUG
+		tmp = new ArrayList<>();
+		ArrayList<Person> t = new ArrayList<>(main);
 		
+		int minIx =0;
+		while (!t.isEmpty()){
+			int check = t.get(0).getLength();
+			for (int i =0; i < t.size(); i++){
+				int c = t.get(i).getLength();
+				if (check < c ){
+					//min < i don't change minIx
+				}else{
+					minIx = i;
+					check = t.get(minIx).getLength();
+				}
+			}
+			tmp.add(t.remove(minIx));
+		}
 	}
 	
 	public void write(String url) throws IOException{
@@ -174,6 +232,41 @@ public class Persons {
 			System.out.println(in);
 		}
 		input.close();
+	}
+
+	public Person edit(String[] inputArray) {
+		Person p = find(inputArray[1]);
+		if (p != null){
+			switch (inputArray[2]) {
+			case "-f": //edit fName
+				p.setfName(inputArray[3]);
+				break;
+			case "-s": //sName
+				p.setsName(inputArray[3]);
+				break;
+			case "-l": //leagth
+				p.setLength(new Integer(inputArray[3]));
+				break;
+			case "-a"://Address
+				p.getAddress().setAdd(inputArray[3]);
+				break;
+			case "-z"://Zip
+				p.getAddress().setZip(inputArray[3]);
+				break;
+			case "-c":
+				p.getAddress().setCity(inputArray[3]);
+				break;
+			case "--sig":
+				p.setSig(inputArray[3]);
+				break;
+			default:
+				System.out.println("unkonw");
+				break;
+			}
+			return p;
+		}else{
+			return null;
+		}
 	}
 	
 }

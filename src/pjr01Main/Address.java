@@ -29,6 +29,12 @@ public class Address {
 		
 	}
 
+	public Address(Address a) {
+		this.add = new String(a.getAdd());
+		this.zip = new String(a.getZip());
+		this.city = new String (a.getCity());
+	}
+
 	public String getAdd() {
 		return add;
 	}

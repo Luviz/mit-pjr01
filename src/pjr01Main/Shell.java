@@ -5,17 +5,45 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Shell {
-	private Persons persons;
-	final String ADDHELP = ""
+	
+	private final String REMOVEHELP = ""
+			+ "remove - remove an item from the list\n"
+			+ "Usage: remove [sig]";
+	
+	private final String ADDHELP = ""
 			+ "add - adds a new Entry to the list.\n "
-			+ "Usage add [fName] [sName] [length(cm)] [Addreas] [Zip Code] [City]";
-	final String SOHWHELP = ""
+			+ "Usage: add [fName] [sName] [length(cm)] [Addreas] [Zip Code] [City]";
+	private final String SOHWHELP = ""
 			+ "show - show the list items\n"
-			+ "Usage show [option] [modifer]\n"
+			+ "Usage: show [option] [modifer]\n"
 			+ "Options:\n"
 			+ "\t	\thelp\n"
 			+ "\t	\tlim [range]\t e.g. show lim 0-5\n"
 			+ "\t	\tsteplim [size]\t e.g. show steplim 5";
+	private final String FINDHELP = ""
+			+ "finds using the signature\n"
+			+ "Usage: find [sig]";
+	
+	private final String EDITHELP = ""
+			+ "Edit u use to edit entrys in the list\n"
+			+ "Usage: Edit [sig] [Option] [Arg]\n"
+			+ "\t	Options:\n"
+			+ "\t	\t	-f - edit First Name [String]\n"
+			+ "\t	\t	-s - edit Last Name [String]\n"
+			+ "\t	\t	-l - edit leagth [int]\n"
+			+ "\t	\t	-a - edit Address [String]\n"
+			+ "\t	\t	-z - edit Zipcode [String]\n"
+			+ "\t	\t	-c - edit City [String]\n"
+			+ "\t	\t	--sig - edit signature [String]";
+	private final String SORTHELP = ""
+			+ "Sorts the list\n"
+			+ "Usage: sort [option]\n"
+			+ "\t	options\n"
+			+ "\t	\t	-s - sort by signatue\n"
+			+ "\t	\t	-n - sort by name\n"
+			+ "\t	\t	-l - sort by leangth";
+	
+	private Persons persons;
 	private Scanner s;
 	
 	public Shell(){
@@ -26,7 +54,7 @@ public class Shell {
 	
 	public void start(){
 		String [] commands = {
-				"exit" , "help", "add" , "edit"	 , "remove" , "show" , "sort" , "write" , "read"
+				"exit" , "help", "add" , "edit"	 , "remove" , "show" , "sort" , "write" , "read", "find", "fun"
 		};
 		
 		String input;			//readLine will read the input line 
@@ -63,17 +91,22 @@ public class Shell {
 					add(inputArray);
 					break;
 				case 3: //Edit
+					edit(inputArray);
 					break;
 				case 4: //remove
+					remove(inputArray);
 					break;
 				case 5: //show
 					show(inputArray);
 					break;
+				case 6: //sort
+					sort(inputArray);
+					break;
 				case 7: //write
+					
 					try {
 						persons.write(inputArray[1]);
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					break;
@@ -81,15 +114,83 @@ public class Shell {
 					try {
 						persons.read(inputArray[1]);
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					break;
-
+				case 9: //find
+					find(inputArray);
+					break;
+				case 10: //fun
+					persons.fun();
+					break;
 				default:
 					break;
 				}
 			}
+		}
+	}
+
+	private void sort(String[] inputArray) {
+		if (inputArray.length > 1){
+			persons.sort(inputArray[1]);
+		}else{
+			System.out.println(SORTHELP);
+		}
+		
+	}
+
+	private void edit(String[] inputArray) {
+		if (inputArray.length > 3) {
+			Person p = persons.edit(inputArray);
+			if (p != null){
+				System.out.println(p.toWrite());
+				System.out.println("has been changded");
+			}else{
+				System.out.println("unable to edit");
+			}
+		}else{
+			System.out.println(EDITHELP);
+		}
+	}
+
+	private void remove(String[] inputArray) {
+		if (inputArray.length < 2){
+			System.out.println(REMOVEHELP);
+		}else{
+			Person p = persons.remove(inputArray[1]);
+			if (p == null){
+				System.out.println("unable to find signature: " + inputArray[1]);
+			}else{
+				System.out.println("removing: "+ inputArray[1]);
+				System.out.println(p.toWrite());
+				System.out.println("has been remvoed");
+				persons.updateTmp();
+			}
+		}
+	}
+
+	private void find(String[] inputArray) {
+		if (inputArray.length > 1){
+			Person p = persons.find(inputArray[1]);
+			if (p != null){
+				System.out.println(""
+						+ "Signature:\n"
+						+ p.getSig() + "\n"
+						+ "Name:\n"
+						+ p.getfName() + "\t"+ p.getsName()+"\n"
+						+ "=================\n"
+						+ "Address:\n"
+						+ p.getAddress().getAdd()+"\n"
+						+ p.getAddress().getZip()+"\n"
+						+ p.getAddress().getCity()+"\n"
+						);
+				
+			}else {
+				System.out.println("nothing was found");
+			}
+			
+		}else{
+			System.out.println(FINDHELP);
 		}
 	}
 
@@ -120,20 +221,28 @@ public class Shell {
 
 	private void show(String[] inArray) {
 		ArrayList<Person> pArray = new ArrayList<>(persons.show());
-		switch (inArray[1]) {
-		case "lim":
-			
-			break;
-			
-		case "help":
-			System.out.println(SOHWHELP);
-			break;
+		if (inArray.length > 1) {
+			switch (inArray[1]) {
+			case "":
+				
+				break;
+			case "lim":
 
-		default:
+				break;
+
+			case "help":
+				System.out.println(SOHWHELP);
+				break;
+
+			default:
+				System.out.println(SOHWHELP);
+				break;
+			}
+		}else {
+			
 			for (Person person : pArray) {
 				System.out.println(person);
 			}
-			break;
 		}
 		
 		
