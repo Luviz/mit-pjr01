@@ -2,16 +2,11 @@ package pjr01Main;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
-
-import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
 
 public class Persons {
 	
@@ -126,6 +121,10 @@ public class Persons {
 		return todisp;
 	}
 	
+	public void showLim(String [] inArray){
+		
+	}
+	
 	public Person find(String in){
 		for (Person p : main) {
 			if(p.getSig().compareTo(in) == 0){
@@ -191,8 +190,23 @@ public class Persons {
 	}
 
 	private void sortBySig() {
-		// TODO Auto-generated method stub
+		tmp = new ArrayList<>();
+		ArrayList<Person> t = new ArrayList<>(main);
 		
+		int minIx =0;
+		while(!t.isEmpty()){
+			String check = t.get(0).getSig();
+			for (int i = 0; i < t.size(); i++) {
+				String c = t.get(i).getSig();
+				if (c.compareTo(check) < 0){
+					
+				}else{
+					minIx = i;
+					check = new String(t.get(minIx).getSig());
+				}
+			}
+			tmp.add(t.remove(minIx));
+		}
 	}
 
 	private void sortByLength() {
@@ -205,7 +219,7 @@ public class Persons {
 			int check = t.get(0).getLength();
 			for (int i =0; i < t.size(); i++){
 				int c = t.get(i).getLength();
-				if (check < c ){
+				if (check > c ){
 					//min < i don't change minIx
 				}else{
 					minIx = i;

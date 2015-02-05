@@ -227,7 +227,29 @@ public class Shell {
 				
 				break;
 			case "lim":
-
+				
+				if (inArray.length < 3){
+					while (!pArray.isEmpty()) {
+						//runnig default. That is 20
+						for (int i = 0; i < 20; i++) {
+							if (!pArray.isEmpty())
+								System.out.println(pArray.remove(0));
+						}
+					}
+				}else{
+					boolean stop = false;
+					while (!pArray.isEmpty() && !stop) {
+						//runnig default. That is inArray 2
+						for (int i = 0; i < new Integer(inArray[2]); i++) {
+							if (!pArray.isEmpty())
+								System.out.println(pArray.remove(0));
+						}
+						System.out.println("Type 'n' for Next 'x' to exit");
+						if (s.next().contains("x")){
+							stop = true;
+						}
+					}
+				}
 				break;
 
 			case "help":
@@ -244,7 +266,7 @@ public class Shell {
 				System.out.println(person);
 			}
 		}
-		
+		System.out.println();
 		
 	}
 	
