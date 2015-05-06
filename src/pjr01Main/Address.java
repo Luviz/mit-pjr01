@@ -1,10 +1,10 @@
 package pjr01Main;
 
 public class Address {
-	private String add;	//post add.
-	private String zip;	//zipcode
+	private String add; // post add.
+	private String zip; // zipcode
 	private String city;
-	
+
 	/**
 	 * 
 	 * @param add
@@ -16,23 +16,25 @@ public class Address {
 		this.zip = zip;
 		this.city = city;
 	}
-	
+
 	/**
 	 * usage for reading from a File
-	 * @param string - [String: Address]_[String zip]_[String: City]\n
+	 * 
+	 * @param string
+	 *            - [String: Address]_[String zip]_[String: City]\n
 	 */
 	public Address(String in) {
-		String []inArray = in.split("_");
+		String[] inArray = in.split("_");
 		this.add = inArray[0];
 		this.zip = inArray[1];
 		this.city = inArray[2];
-		
+
 	}
 
 	public Address(Address a) {
 		this.add = new String(a.getAdd());
 		this.zip = new String(a.getZip());
-		this.city = new String (a.getCity());
+		this.city = new String(a.getCity());
 	}
 
 	public String getAdd() {
@@ -60,14 +62,12 @@ public class Address {
 	}
 
 	@Override
-	public String toString(){
-		return add + "\t" + zip +"\t" + city;
+	public String toString() {
+		return add + "\t" + zip + "\t" + city;
 	}
-	
+
 	public String toWrite() {
 		return add + "_" + zip + "_" + city;
 	}
-	
-	
-	
+
 }
